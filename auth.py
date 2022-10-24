@@ -69,6 +69,7 @@ class LoginWindow(QDialog):
         super(LoginWindow, self).__init__()
         self.auth = {}
         self.app_redirect = MainAppWindow()
+        self.reg = RegisterWindow()
         self.setWindowFlag(Qt.FramelessWindowHint)
 
         self.ui = Ui_Login()
@@ -100,7 +101,12 @@ class LoginWindow(QDialog):
             self.ui.Incorrect.setText('Wrong login or password')
 
     def register_redirect(self):
-        pass
+        self.hide()
+        self.show_reg()
+
+    def show_reg(self):
+        if self.reg.exec():
+            self.show()
 
 
 class RegisterWindow(QDialog):
@@ -141,7 +147,7 @@ class RegisterWindow(QDialog):
             self.ui.acc_used.setText(f'Account {user_login} is already in use.')
 
     def login_redirect(self):
-        pass
+        self.accept()
 
 
 if __name__ == '__main__':
