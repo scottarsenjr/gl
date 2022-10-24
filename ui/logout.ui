@@ -19,16 +19,6 @@
 	background-color: transparent;
 	color: #fff;
 }
-#centralwiget{
-	background-color: rgb(255, 255, 255);
-}
-#side_menu{
-	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 rgba(9, 22, 41, 255), stop:1 rgba(9, 31, 63, 255));
-	border-radius: 20px;
-}
-#header{
-	background-color: rgb(5, 17, 34);
-}
 QPushButton{
 	padding: 10px;
 	background-color: rgb(5, 17, 34);
@@ -38,10 +28,10 @@ QPushButton{
 QPushButton:hover{
 	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0.130682, y2:0.165, stop:0 rgba(34, 120, 239, 255), stop:1 rgba(145, 185, 239, 255));
 }
-#main_body{
-	background-color: white;
-	border-radius: 10px;
-}</string>
+#frame_2{
+	border: 2px solid black;
+}
+</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
@@ -118,7 +108,11 @@ border: 20px;</string>
    <item>
     <widget class="QFrame" name="frame_2">
      <property name="styleSheet">
-      <string notr="true">background-color: white;</string>
+      <string notr="true">background-color: white;
+
+frame_2.setStyleSheet{
+	border: 5px solid black;
+}</string>
      </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
