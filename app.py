@@ -11,12 +11,14 @@ class MainAppWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.setWindowFlag(Qt.FramelessWindowHint)
+        self.current_user = ''
 
         self.ui.pushButton.clicked.connect(lambda: self.slideLeftMenu())
         self.ui.pushButton_5.clicked.connect(self.logout)
 
     def logout(self):
-        pass
+        dialog = LogoutDialog()
+        dialog.show()
 
     def slideLeftMenu(self):
         width = self.ui.side_menu.width()
@@ -32,3 +34,9 @@ class MainAppWindow(QMainWindow):
         self.animation.setEndValue(new_width)
         self.animation.setEasingCurve(QtCore.QEasingCurve.InOutQuart)
         self.animation.start()
+
+
+class LogoutDialog(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.loadUi('ui/logout.ui', self)
