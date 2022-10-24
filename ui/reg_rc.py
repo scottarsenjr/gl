@@ -12,18 +12,25 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import ui.resources.icon_rc
 
 
-class Ui_RegWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.setEnabled(True)
-        MainWindow.resize(396, 579)
-        MainWindow.setAutoFillBackground(False)
-        MainWindow.setStyleSheet("background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 rgba(9, 22, 41, 255), stop:1 rgba(9, 31, 63, 255))")
-        MainWindow.setWindowFilePath("")
-        MainWindow.setAnimated(True)
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setObjectName("centralwidget")
-        self.widget = QtWidgets.QWidget(self.centralwidget)
+class Ui_Registration(object):
+    def setupUi(self, Dialog):
+        Dialog.setObjectName("Dialog")
+        Dialog.resize(400, 580)
+        Dialog.setStyleSheet("background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 rgba(9, 22, 41, 255), stop:1 rgba(9, 31, 63, 255))")
+        self.lineEdit_3 = QtWidgets.QLineEdit(Dialog)
+        self.lineEdit_3.setGeometry(QtCore.QRect(30, 370, 331, 51))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(20)
+        self.lineEdit_3.setFont(font)
+        self.lineEdit_3.setStyleSheet("QLineEdit {\n"
+"    border: 1px solid white;\n"
+"    border-radius: 20px;\n"
+"    background-color: rgb(6, 26, 52);\n"
+"    color: white;\n"
+"}")
+        self.lineEdit_3.setObjectName("lineEdit_3")
+        self.widget = QtWidgets.QWidget(Dialog)
         self.widget.setGeometry(QtCore.QRect(-20, -20, 821, 91))
         self.widget.setStyleSheet("background-color:qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 rgba(5, 13, 25, 255), stop:1 rgba(8, 27, 54, 255))\n"
 "\n"
@@ -37,77 +44,57 @@ class Ui_RegWindow(object):
         self.label.setText("")
         self.label.setPixmap(QtGui.QPixmap("F:\\pyqt\\ui\\resources/gl3.png"))
         self.label.setObjectName("label")
-        self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit.setGeometry(QtCore.QRect(30, 170, 331, 51))
-        font = QtGui.QFont()
-        font.setFamily("Calibri")
-        font.setPointSize(20)
-        self.lineEdit.setFont(font)
-        self.lineEdit.setStyleSheet("color: rgb(255, 255, 255)")
-        self.lineEdit.setObjectName("lineEdit")
-        self.lineEdit_2 = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit_2.setGeometry(QtCore.QRect(30, 260, 331, 51))
+        self.lineEdit_2 = QtWidgets.QLineEdit(Dialog)
+        self.lineEdit_2.setGeometry(QtCore.QRect(30, 270, 331, 51))
         font = QtGui.QFont()
         font.setFamily("Calibri")
         font.setPointSize(20)
         self.lineEdit_2.setFont(font)
-        self.lineEdit_2.setStyleSheet("color: white;")
+        self.lineEdit_2.setStyleSheet("QLineEdit {\n"
+"    border: 1px solid white;\n"
+"    border-radius: 20px;\n"
+"    background-color: rgb(6, 26, 52);\n"
+"    color: white;\n"
+"}")
         self.lineEdit_2.setObjectName("lineEdit_2")
-        self.reg_btn = QtWidgets.QPushButton(self.centralwidget)
-        self.reg_btn.setGeometry(QtCore.QRect(130, 510, 131, 51))
+        self.label_2 = QtWidgets.QLabel(Dialog)
+        self.label_2.setGeometry(QtCore.QRect(30, 130, 151, 31))
         font = QtGui.QFont()
         font.setFamily("Calibri")
         font.setPointSize(20)
-        self.reg_btn.setFont(font)
-        self.reg_btn.setStyleSheet("color: rgb(255, 255, 255)")
-        self.reg_btn.setObjectName("reg_btn")
-        self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(30, 140, 151, 31))
-        font = QtGui.QFont()
-        font.setFamily("Calibri")
-        font.setPointSize(14)
         self.label_2.setFont(font)
         self.label_2.setStyleSheet("background-color: rgba(255, 255, 255, 0);\n"
 "color: white;")
         self.label_2.setObjectName("label_2")
-        self.label_3 = QtWidgets.QLabel(self.centralwidget)
+        self.label_3 = QtWidgets.QLabel(Dialog)
         self.label_3.setGeometry(QtCore.QRect(30, 230, 151, 31))
         font = QtGui.QFont()
         font.setFamily("Calibri")
-        font.setPointSize(14)
+        font.setPointSize(20)
         self.label_3.setFont(font)
         self.label_3.setStyleSheet("background-color: rgba(255, 255, 255, 0);\n"
 "color: white;")
         self.label_3.setObjectName("label_3")
-        self.label_4 = QtWidgets.QLabel(self.centralwidget)
-        self.label_4.setGeometry(QtCore.QRect(100, 70, 191, 61))
-        font = QtGui.QFont()
-        font.setFamily("Calibri")
-        font.setPointSize(24)
-        self.label_4.setFont(font)
-        self.label_4.setStyleSheet("background-color: rgba(255, 255, 255, 0);\n"
-"color: white;")
-        self.label_4.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_4.setObjectName("label_4")
-        self.lineEdit_3 = QtWidgets.QLineEdit(self.centralwidget)
-        self.lineEdit_3.setGeometry(QtCore.QRect(30, 350, 331, 51))
+        self.reg_btn = QtWidgets.QPushButton(Dialog)
+        self.reg_btn.setGeometry(QtCore.QRect(220, 500, 130, 60))
+        self.reg_btn.setMinimumSize(QtCore.QSize(130, 60))
+        self.reg_btn.setMaximumSize(QtCore.QSize(130, 60))
         font = QtGui.QFont()
         font.setFamily("Calibri")
         font.setPointSize(20)
-        self.lineEdit_3.setFont(font)
-        self.lineEdit_3.setStyleSheet("color: white;")
-        self.lineEdit_3.setObjectName("lineEdit_3")
-        self.label_5 = QtWidgets.QLabel(self.centralwidget)
-        self.label_5.setGeometry(QtCore.QRect(30, 320, 151, 31))
-        font = QtGui.QFont()
-        font.setFamily("Calibri")
-        font.setPointSize(14)
-        self.label_5.setFont(font)
-        self.label_5.setStyleSheet("background-color: rgba(255, 255, 255, 0);\n"
-"color: white;")
-        self.label_5.setObjectName("label_5")
-        self.checkBox = QtWidgets.QCheckBox(self.centralwidget)
-        self.checkBox.setGeometry(QtCore.QRect(30, 410, 331, 51))
+        self.reg_btn.setFont(font)
+        self.reg_btn.setStyleSheet("QPushButton{\n"
+"border: 1px solid white;\n"
+"border-radius: 20px;\n"
+"background-color: rgb(6, 26, 52);\n"
+"color: white;\n"
+"}\n"
+"QPushButton:hover{\n"
+"    background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0.130682, y2:0.165, stop:0 rgba(34, 120, 239, 255), stop:1 rgba(145, 185, 239, 255));\n"
+"}")
+        self.reg_btn.setObjectName("reg_btn")
+        self.checkBox = QtWidgets.QCheckBox(Dialog)
+        self.checkBox.setGeometry(QtCore.QRect(30, 440, 31, 31))
         font = QtGui.QFont()
         font.setFamily("Calibri")
         font.setPointSize(14)
@@ -117,50 +104,94 @@ class Ui_RegWindow(object):
         self.checkBox.setStyleSheet("background-color: rgba(255, 255, 255, 0);\n"
 "color: white;")
         self.checkBox.setText("")
-        self.checkBox.setIconSize(QtCore.QSize(32, 32))
+        self.checkBox.setIconSize(QtCore.QSize(50, 50))
         self.checkBox.setChecked(False)
         self.checkBox.setTristate(False)
         self.checkBox.setObjectName("checkBox")
-        self.label_6 = QtWidgets.QLabel(self.centralwidget)
-        self.label_6.setGeometry(QtCore.QRect(50, 420, 301, 31))
+        self.acc_used = QtWidgets.QLabel(Dialog)
+        self.acc_used.setGeometry(QtCore.QRect(0, 470, 391, 31))
         font = QtGui.QFont()
         font.setFamily("Calibri")
-        font.setPointSize(14)
-        self.label_6.setFont(font)
-        self.label_6.setStyleSheet("background-color: rgba(255, 255, 255, 0);\n"
-"color: white;")
-        self.label_6.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_6.setObjectName("label_6")
-        self.acc_used = QtWidgets.QLabel(self.centralwidget)
-        self.acc_used.setGeometry(QtCore.QRect(0, 460, 391, 31))
-        font = QtGui.QFont()
-        font.setFamily("Calibri")
-        font.setPointSize(14)
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
         self.acc_used.setFont(font)
         self.acc_used.setStyleSheet("background-color: rgba(255, 255, 255, 0);\n"
 "color: red;")
         self.acc_used.setText("")
         self.acc_used.setAlignment(QtCore.Qt.AlignCenter)
         self.acc_used.setObjectName("acc_used")
-        self.back_btn = QtWidgets.QPushButton(self.centralwidget)
-        self.back_btn.setGeometry(QtCore.QRect(10, 80, 31, 41))
-        self.back_btn.setStyleSheet("background-color: rgba(255, 255, 255, 0)")
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/icons/icons/arrow-left.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.back_btn.setIcon(icon)
-        self.back_btn.setIconSize(QtCore.QSize(32, 32))
+        self.label_4 = QtWidgets.QLabel(Dialog)
+        self.label_4.setGeometry(QtCore.QRect(100, 70, 191, 61))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(24)
+        self.label_4.setFont(font)
+        self.label_4.setStyleSheet("background-color: rgba(255, 255, 255, 0);\n"
+"color: white;")
+        self.label_4.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_4.setObjectName("label_4")
+        self.label_6 = QtWidgets.QLabel(Dialog)
+        self.label_6.setGeometry(QtCore.QRect(60, 440, 271, 31))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(16)
+        self.label_6.setFont(font)
+        self.label_6.setStyleSheet("background-color: rgba(255, 255, 255, 0);\n"
+"color: white;")
+        self.label_6.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_6.setObjectName("label_6")
+        self.lineEdit = QtWidgets.QLineEdit(Dialog)
+        self.lineEdit.setGeometry(QtCore.QRect(30, 170, 331, 51))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(20)
+        self.lineEdit.setFont(font)
+        self.lineEdit.setStyleSheet("QLineEdit {\n"
+"    border: 1px solid white;\n"
+"    border-radius: 20px;\n"
+"    background-color: rgb(6, 26, 52);\n"
+"    color: white;\n"
+"}")
+        self.lineEdit.setObjectName("lineEdit")
+        self.label_5 = QtWidgets.QLabel(Dialog)
+        self.label_5.setGeometry(QtCore.QRect(30, 330, 201, 31))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(20)
+        self.label_5.setFont(font)
+        self.label_5.setStyleSheet("background-color: rgba(255, 255, 255, 0);\n"
+"color: white;")
+        self.label_5.setObjectName("label_5")
+        self.back_btn = QtWidgets.QPushButton(Dialog)
+        self.back_btn.setGeometry(QtCore.QRect(40, 500, 130, 60))
+        self.back_btn.setMinimumSize(QtCore.QSize(130, 60))
+        self.back_btn.setMaximumSize(QtCore.QSize(130, 60))
+        font = QtGui.QFont()
+        font.setFamily("Calibri")
+        font.setPointSize(20)
+        self.back_btn.setFont(font)
+        self.back_btn.setStyleSheet("QPushButton{\n"
+"border: 1px solid white;\n"
+"border-radius: 20px;\n"
+"background-color: rgb(6, 26, 52);\n"
+"color: white;\n"
+"}\n"
+"QPushButton:hover{\n"
+"    background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0.130682, y2:0.165, stop:0 rgba(34, 120, 239, 255), stop:1 rgba(145, 185, 239, 255));\n"
+"}")
         self.back_btn.setObjectName("back_btn")
-        MainWindow.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.retranslateUi(Dialog)
+        QtCore.QMetaObject.connectSlotsByName(Dialog)
 
-    def retranslateUi(self, MainWindow):
+    def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "GL Launcher"))
-        self.reg_btn.setText(_translate("MainWindow", "Register"))
-        self.label_2.setText(_translate("MainWindow", "login:"))
-        self.label_3.setText(_translate("MainWindow", "password:"))
-        self.label_4.setText(_translate("MainWindow", "Registration"))
-        self.label_5.setText(_translate("MainWindow", "password (again):"))
-        self.label_6.setText(_translate("MainWindow", "I agree with the terms of use"))
+        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        self.label_2.setText(_translate("Dialog", "login:"))
+        self.label_3.setText(_translate("Dialog", "password:"))
+        self.reg_btn.setText(_translate("Dialog", "Register"))
+        self.label_4.setText(_translate("Dialog", "Registration"))
+        self.label_6.setText(_translate("Dialog", "I agree with the terms of use"))
+        self.label_5.setText(_translate("Dialog", "password (again):"))
+        self.back_btn.setText(_translate("Dialog", "Login"))

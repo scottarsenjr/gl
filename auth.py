@@ -2,9 +2,10 @@ import random, sqlite3, sys, time
 
 from PyQt5 import uic
 from PyQt5.QtCore import Qt, QThread, pyqtSignal
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QDialog
 from app import *
 from ui.reg_rc import *
+from ui.login_rc import *
 
 db = sqlite3.connect('database.db')
 cursor = db.cursor()
@@ -63,19 +64,18 @@ class ConnectWindow(QMainWindow):
         self.auth.show()
 
 
-class LoginWindow(QMainWindow):
+class LoginWindow(QDialog):
     def __init__(self):
-        super().__init__()
+        super(LoginWindow, self).__init__()
         self.auth = {}
         self.app_redirect = MainAppWindow()
-        self.register_redirect = RegisterWindow()
-
         self.setWindowFlag(Qt.FramelessWindowHint)
 
-        uic.loadUi('ui/auth.ui', self)
+        self.ui = Ui_Login()
+        self.ui.setupUi(self)
 
-        self.pushButton.pressed.connect(self.login)
-        self.pushButton_2.pressed.connect(self.register)
+        self.ui.pushButton.clicked.connect(self.login)
+        self.ui.pushButton_2.clicked.connect(self.register_redirect)
 
     def login(self):
         cursor.execute("SELECT * FROM users")
@@ -84,30 +84,36 @@ class LoginWindow(QMainWindow):
         for j, k in result:
             self.auth[j] = k
 
-        if self.lineEdit.text() in self.auth:
-            if self.lineEdit_2.text() == self.auth.get(self.lineEdit.text()):
+        if len(self.ui.lineEdit.text()) == 0:
+            return
+
+        if len(self.ui.lineEdit_2.text()) == 0:
+            return
+
+        if self.ui.lineEdit.text() in self.auth:
+            if self.ui.lineEdit_2.text() == self.auth.get(self.ui.lineEdit.text()):
                 self.close()
                 self.app_redirect.show()
             else:
-                self.Incorrect.setText('Wrong login or password')
+                self.ui.Incorrect.setText('Wrong login or password')
         else:
-            self.Incorrect.setText('Wrong login or password')
+            self.ui.Incorrect.setText('Wrong login or password')
 
-    def register(self):
-        self.hide()
-        self.register_redirect.show()
+    def register_redirect(self):
+        pass
 
 
-class RegisterWindow(QMainWindow):
+class RegisterWindow(QDialog):
     def __init__(self):
-        super().__init__()
-        self.app_redirect = MainAppWindow()
-        self.ui = Ui_RegWindow()
+        super(RegisterWindow, self).__init__()
+        self.app_redirected = MainAppWindow()
+        self.ui = Ui_Registration()
         self.ui.setupUi(self)
 
         self.setWindowFlag(Qt.FramelessWindowHint)
 
         self.ui.reg_btn.clicked.connect(self.register)
+        self.ui.back_btn.clicked.connect(self.login_redirect)
 
     def register(self):
         user_login = self.ui.lineEdit.text()
@@ -125,7 +131,7 @@ class RegisterWindow(QMainWindow):
                 if self.ui.checkBox.isChecked():
                     cursor.execute(f'INSERT INTO users VALUES ("{user_login}", "{user_password}")')
                     self.close()
-                    self.app_redirect.show()
+                    self.app_redirected.show()
                     db.commit()
                 else:
                     self.ui.acc_used.setText('You must to agree to the terms of use.')
@@ -134,19 +140,12 @@ class RegisterWindow(QMainWindow):
         else:
             self.ui.acc_used.setText(f'Account {user_login} is already in use.')
 
-
-def window():
-    app = QtWidgets.QApplication(sys.argv)
-    lgn = LoginWindow()
-    reg = RegisterWindow()
-    main = ConnectWindow()
-    lgn.pushButton_2.clicked.connect(reg.show)
-    lgn.pushButton_2.clicked.connect(lgn.close)
-    reg.ui.back_btn.clicked.connect(lgn.show)
-    reg.ui.back_btn.clicked.connect(reg.close)
-    main.show()
-    sys.exit(app.exec_())
+    def login_redirect(self):
+        pass
 
 
 if __name__ == '__main__':
-    window()
+    app = QtWidgets.QApplication(sys.argv)
+    main = ConnectWindow()
+    main.show()
+    sys.exit(app.exec_())
