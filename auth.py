@@ -2,10 +2,10 @@ import random, sqlite3, sys, time
 
 from PyQt5 import uic
 from PyQt5.QtCore import Qt, QThread, pyqtSignal
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QDialog
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QDialog, QMessageBox
 from app import *
-from ui.reg_rc import *
-from ui.login_rc import *
+from ui.rc.reg_rc import *
+from ui.rc.login_rc import *
 
 db = sqlite3.connect('database.db')
 cursor = db.cursor()
@@ -31,7 +31,7 @@ class ConnectWindow(QMainWindow):
         super().__init__()
         self.auth = LoginWindow()
 
-        uic.loadUi('ui/main.ui', self)
+        uic.loadUi('ui/ui/main.ui', self)
 
         self.setWindowTitle('GL Launcher')
         self.setWindowFlag(Qt.FramelessWindowHint)
@@ -94,7 +94,7 @@ class LoginWindow(QDialog):
         if self.ui.lineEdit.text() in self.auth:
             if self.ui.lineEdit_2.text() == self.auth.get(self.ui.lineEdit.text()):
                 self.close()
-                self.app_redirect.show()
+                self.pass_info()
             else:
                 self.ui.Incorrect.setText('Wrong login or password')
         else:
@@ -108,11 +108,15 @@ class LoginWindow(QDialog):
         if self.reg.exec():
             self.show()
 
+    def pass_info(self):
+        self.app_redirect.current_user = self.ui.lineEdit.text()
+        self.app_redirect.display_info()
+
 
 class RegisterWindow(QDialog):
     def __init__(self):
         super(RegisterWindow, self).__init__()
-        self.app_redirected = MainAppWindow()
+        self.app_redirect = MainAppWindow()
         self.ui = Ui_Registration()
         self.ui.setupUi(self)
 
@@ -137,7 +141,8 @@ class RegisterWindow(QDialog):
                 if self.ui.checkBox.isChecked():
                     cursor.execute(f'INSERT INTO users VALUES ("{user_login}", "{user_password}")')
                     self.close()
-                    self.app_redirected.show()
+                    self.show_success_register()
+                    self.login_redirect()
                     db.commit()
                 else:
                     self.ui.acc_used.setText('You must to agree to the terms of use.')
@@ -148,6 +153,21 @@ class RegisterWindow(QDialog):
 
     def login_redirect(self):
         self.accept()
+
+    def show_success_register(self):
+        msg = SuccessWindow()
+        msg.exec_()
+
+
+class SuccessWindow(QDialog):
+    def __init__(self):
+        super().__init__()
+        uic.loadUi('ui/ui/success_reg.ui', self)
+        self.pushButton.clicked.connect(self.ok)
+        self.setWindowFlag(Qt.FramelessWindowHint)
+
+    def ok(self):
+        self.close()
 
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
 import sys
 
-from ui.app_rc import *
-from ui.logout_rc import *
+from ui.rc.app_rc import *
+from ui.rc.logout_rc import *
 from auth import *
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QDialog
 from PyQt5.QtCore import Qt, QPropertyAnimation
@@ -13,10 +13,14 @@ class MainAppWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.setWindowFlag(Qt.FramelessWindowHint)
-        self.current_user = ''
+        self.current_user = self
 
         self.ui.pushButton.clicked.connect(lambda: self.slideLeftMenu())
         self.ui.pushButton_5.clicked.connect(self.logout)
+
+    def display_info(self):
+        self.ui.label_2.setText(self.current_user)
+        self.show()
 
     def logout(self):
         dialog = LogoutDialog(self)
