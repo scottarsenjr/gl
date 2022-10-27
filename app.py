@@ -19,7 +19,6 @@ class MainAppWindow(QMainWindow):
         self.ui.pushButton_5.clicked.connect(self.logout)
 
     def display_info(self):
-        self.ui.label_2.setText(self.current_user)
         self.show()
 
     def logout(self):
