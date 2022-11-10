@@ -12,7 +12,8 @@ cursor = db.cursor()
 
 cursor.execute('''CREATE TABLE IF NOT EXISTS users(
     login TEXT,
-    password TEXT
+    password TEXT,
+    balance INTEGER
 )''')
 db.commit()
 
@@ -69,6 +70,7 @@ class LoginWindow(QDialog):
         super(LoginWindow, self).__init__()
         self.auth = {}
         self.app_redirect = MainAppWindow()
+        self.wallet = Wallet()
         self.reg = RegisterWindow()
         self.setWindowFlag(Qt.FramelessWindowHint)
 
@@ -79,7 +81,7 @@ class LoginWindow(QDialog):
         self.ui.pushButton_2.clicked.connect(self.register_redirect)
 
     def login(self):
-        cursor.execute("SELECT * FROM users")
+        cursor.execute("SELECT login, password FROM users")
         result = cursor.fetchall()
 
         for j, k in result:
