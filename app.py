@@ -102,6 +102,13 @@ class Wallet(QDialog):
             msg = FillUp()
             msg.exec_()
 
+    def show_sub_window(self):
+        self.amount = Amount()
+        self.amount.submitClicked.connect(self.on_data_confirm)
+
+    def on_data_confirm(self, balance):
+        print(balance)
+
     def home_redirect(self):
         self.accept()
 
@@ -176,10 +183,10 @@ class Payment(QDialog):
         self.ui.cardholder.setValidator(abc_validator)
 
     def cancel(self):
-        self.accept()
+        self.close()
 
     def proceed(self):
-        self.hide()
+        self.close()
         self.show_amount()
 
     def show_amount(self):
@@ -188,6 +195,8 @@ class Payment(QDialog):
 
 
 class Amount(QDialog):
+    submitClicked = QtCore.pyqtSignal(str)
+
     def __init__(self):
         super().__init__()
         self.setWindowFlag(Qt.FramelessWindowHint)
@@ -204,7 +213,7 @@ class Amount(QDialog):
         self.ui.five_thousand.clicked.connect(partial(self.proceed, '5000'))
 
     def cancel(self):
-        self.accept()
+        self.close()
 
     def proceed(self, value):
         self.ui.sum.setText(f'{value} $')
@@ -213,7 +222,10 @@ class Amount(QDialog):
         if self.ui.sum.text():
             msg = SuccessfullTransaction()
             msg.exec_()
-            self.close()
+
+    def confirm(self):
+        self.submitClicked.emit(int(self.ui.sum.text()))
+        self.close()
 
 
 class SuccessfullTransaction(QDialog):
