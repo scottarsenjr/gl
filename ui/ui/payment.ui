@@ -352,6 +352,24 @@ QPushButton:hover{
                   </property>
                  </widget>
                 </item>
+                <item>
+                 <widget class="QLabel" name="error">
+                  <property name="font">
+                   <font>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">color: red;</string>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
                 <item alignment="Qt::AlignRight">
                  <widget class="QPushButton" name="proceed">
                   <property name="minimumSize">

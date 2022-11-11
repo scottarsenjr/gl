@@ -1,5 +1,6 @@
 import sqlite3
 import sys
+import datetime
 
 from ui.rc.app_rc import *
 from ui.rc.logout_rc import *
@@ -13,26 +14,101 @@ from PyQt5.QtCore import Qt, QPropertyAnimation, QRegExp
 from PyQt5.QtGui import QRegExpValidator
 
 
+class Payment(QDialog):
+    submitClicked = QtCore.pyqtSignal(str)
+
+    def __init__(self):
+        super().__init__()
+        self.setWindowFlag(Qt.FramelessWindowHint)
+        self.ui = Ui_Payment()
+
+        self.ui.setupUi(self)
+        self.ui.stackedWidget.setCurrentWidget(self.ui.payment)
+
+        self.ui.cancel.clicked.connect(self.cancel)
+        self.ui.proceed.clicked.connect(self.proceed)
+
+        num_validator = QRegExpValidator(QRegExp(r'[0-9]+'))
+
+        self.ui.card_number.setValidator(num_validator)
+        self.ui.card_number.setMaxLength(16)
+        self.ui.card_number.setInputMask('0000 0000 0000 0000')
+
+        self.ui.month.setValidator(num_validator)
+        self.ui.month.setMaxLength(2)
+
+        self.ui.year.setValidator(num_validator)
+        self.ui.year.setMaxLength(4)
+
+        self.ui.cvv.setValidator(num_validator)
+        self.ui.cvv.setMaxLength(4)
+
+    def cancel(self):
+        self.accept()
+
+    def proceed(self):
+        self.ui.error.setText('')
+        date = datetime.date.today()
+        self.ui.stackedWidget.setCurrentWidget(self.ui.amount)
+        self._subwindow = None
+
+        self.ui.hundred.clicked.connect(partial(self.redirect, '100'))
+        self.ui.two_hundred.clicked.connect(partial(self.redirect, '250'))
+        self.ui.half_thousand.clicked.connect(partial(self.redirect, '500'))
+        self.ui.thousand.clicked.connect(partial(self.redirect, '1000'))
+        self.ui.two_half_thousand.clicked.connect(partial(self.redirect, '2500'))
+        self.ui.five_thousand.clicked.connect(partial(self.redirect, '5000'))
+
+        self.ui.cancel_2.clicked.connect(self.back)
+        self.ui.proceed_2.clicked.connect(self.next)
+
+    def back(self):
+        self.ui.stackedWidget.setCurrentWidget(self.ui.payment)
+
+    def redirect(self, value):
+        self.ui.sum.setText(f'{value} $')
+        self.balance = value
+
+    def next(self):
+        if self.ui.sum.text():
+            if self._subwindow is None:
+                self.submitClicked.emit(self.balance)
+                self._subwindow = SuccessfullTransaction()
+            self._subwindow.show()
+            self._subwindow.activateWindow()
+            self.close()
+            self.ui.stackedWidget.setCurrentWidget(self.ui.payment)
+
+
 class MainAppWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.setWindowFlag(Qt.FramelessWindowHint)
-        self.current_user = self
+        self.current_user = False
         self._logout = None
-        # Передать сюда в переменную значение value (в self.current_balance)
-        self.current_balance = 0
+
+        self.is_checked = self
 
         self.ui.stackedWidget.setCurrentWidget(self.ui.home_page)
         self.ui.pushButton.clicked.connect(lambda: self.slideLeftMenu())
         self.ui.pushButton_5.clicked.connect(self.logout)
         self.ui.wallet.clicked.connect(self.redirect)
 
+    def set_balance(self):
+        db = sqlite3.connect('database.db')
+        cursor = db.cursor()
+        cursor.execute(f'SELECT balance FROM users WHERE login like "{self.current_user}"')
+        result = cursor.fetchall()[0][0]
+        self.current_balance = result
+        self.ui.balance.setText(f'Balance: {self.current_balance} $')
+
     def redirect(self):
         self._logout_2 = None
         self._shipping = None
         self._payment = None
+        self.set_balance()
 
         self.ui.stackedWidget.setCurrentWidget(self.ui.wallet_page)
 
@@ -56,8 +132,20 @@ class MainAppWindow(QMainWindow):
     def top_up_balance(self):
         if self._payment is None:
             self._payment = Payment()
+            self._payment.submitClicked.connect(self.update_balance)
+            print(self._payment.submitClicked)
         self._payment.show()
         self._payment.activateWindow()
+
+    def update_balance(self, balance):
+        self.current_balance += int(balance)
+        print(int(balance))
+        self.ui.balance.setText(f'Balance: {self.current_balance} $')
+        db = sqlite3.connect('database.db')
+        cursor = db.cursor()
+
+        cursor.execute(f'UPDATE users SET balance={self.current_balance} WHERE login="{self.current_user}"')
+        db.commit()
 
     def home_redirect(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.home_page)
@@ -137,70 +225,6 @@ class FillUp(QDialog):
 
     def ok(self):
         self.close()
-
-
-class Payment(QDialog):
-    def __init__(self):
-        super().__init__()
-        self.setWindowFlag(Qt.FramelessWindowHint)
-        self.ui = Ui_Payment()
-
-        self.ui.setupUi(self)
-        self.ui.stackedWidget.setCurrentWidget(self.ui.payment)
-
-        self.ui.cancel.clicked.connect(self.cancel)
-        self.ui.proceed.clicked.connect(self.proceed)
-
-        num_validator = QRegExpValidator(QRegExp(r'[0-9]+'))
-        abc_validator = QRegExpValidator(QRegExp(r'^[a-zA-Z]*$'))
-
-        self.ui.card_number.setValidator(num_validator)
-        self.ui.card_number.setMaxLength(16)
-        self.ui.card_number.setInputMask('0000 0000 0000 0000; ')
-
-        self.ui.month.setValidator(num_validator)
-        self.ui.month.setMaxLength(2)
-
-        self.ui.year.setValidator(num_validator)
-        self.ui.year.setMaxLength(4)
-
-        self.ui.cvv.setValidator(num_validator)
-        self.ui.cvv.setMaxLength(4)
-
-        self.ui.cardholder.setValidator(abc_validator)
-
-    def cancel(self):
-        self.accept()
-
-    def proceed(self):
-        self.ui.stackedWidget.setCurrentWidget(self.ui.amount)
-        self._subwindow = None
-
-        self.ui.hundred.clicked.connect(partial(self.redirect, '100'))
-        self.ui.two_hundred.clicked.connect(partial(self.redirect, '250'))
-        self.ui.half_thousand.clicked.connect(partial(self.redirect, '500'))
-        self.ui.thousand.clicked.connect(partial(self.redirect, '1000'))
-        self.ui.two_half_thousand.clicked.connect(partial(self.redirect, '2500'))
-        self.ui.five_thousand.clicked.connect(partial(self.redirect, '5000'))
-
-        self.ui.cancel_2.clicked.connect(self.back)
-        self.ui.proceed_2.clicked.connect(self.next)
-
-    def back(self):
-        self.ui.stackedWidget.setCurrentWidget(self.ui.payment)
-
-    def redirect(self, value):
-        self.ui.sum.setText(f'{value} $')
-        # value передать в MainWindowApp класс
-
-    def next(self):
-        if self.ui.sum.text():
-            if self._subwindow is None:
-                self._subwindow = SuccessfullTransaction()
-            self._subwindow.show()
-            self._subwindow.activateWindow()
-            self.close()
-            self.ui.stackedWidget.setCurrentWidget(self.ui.payment)
 
 
 class SuccessfullTransaction(QDialog):
