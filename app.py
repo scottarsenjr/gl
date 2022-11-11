@@ -17,10 +17,10 @@ class MainAppWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.ui = Ui_MainWindow()
-        self.payment = Payment()
         self.ui.setupUi(self)
         self.setWindowFlag(Qt.FramelessWindowHint)
         self.current_user = self
+        self._logout = None
         # Передать сюда в переменную значение value (в self.current_balance)
         self.current_balance = 0
 
@@ -30,6 +30,10 @@ class MainAppWindow(QMainWindow):
         self.ui.wallet.clicked.connect(self.redirect)
 
     def redirect(self):
+        self._logout_2 = None
+        self._shipping = None
+        self._payment = None
+
         self.ui.stackedWidget.setCurrentWidget(self.ui.wallet_page)
 
         self.ui.home_2.clicked.connect(self.home_redirect)
@@ -41,15 +45,19 @@ class MainAppWindow(QMainWindow):
         if (self.ui.textEdit.toPlainText()) and not(self.ui.textEdit.toPlainText().isspace()):
             self.top_up_balance()
         else:
-            msg = FillUp()
-            msg.exec_()
+            self.appear_warning()
+
+    def appear_warning(self):
+        if self._shipping is None:
+            self._shipping = FillUp()
+        self._shipping.show()
+        self._shipping.activateWindow()
 
     def top_up_balance(self):
-        self.show_payment()
-
-    def show_payment(self):
-        if self.payment.exec():
-            self.show()
+        if self._payment is None:
+            self._payment = Payment()
+        self._payment.show()
+        self._payment.activateWindow()
 
     def home_redirect(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.home_page)
@@ -59,12 +67,16 @@ class MainAppWindow(QMainWindow):
         self.show()
 
     def logout(self):
-        dialog = LogoutDialog(self)
-        dialog.exec()
+        if self._logout is None:
+            self._logout = LogoutDialog(self)
+        self._logout.show()
+        self._logout.activateWindow()
 
     def logout_2(self):
-        dialog = LogoutDialog(self)
-        dialog.exec()
+        if self._logout_2 is None:
+            self._logout_2 = LogoutDialog(self)
+        self._logout_2.show()
+        self._logout_2.activateWindow()
 
     def slideLeftMenu(self):
         width = self.ui.side_menu.width()
@@ -132,6 +144,7 @@ class Payment(QDialog):
         super().__init__()
         self.setWindowFlag(Qt.FramelessWindowHint)
         self.ui = Ui_Payment()
+
         self.ui.setupUi(self)
         self.ui.stackedWidget.setCurrentWidget(self.ui.payment)
 
@@ -161,6 +174,7 @@ class Payment(QDialog):
 
     def proceed(self):
         self.ui.stackedWidget.setCurrentWidget(self.ui.amount)
+        self._subwindow = None
 
         self.ui.hundred.clicked.connect(partial(self.redirect, '100'))
         self.ui.two_hundred.clicked.connect(partial(self.redirect, '250'))
@@ -181,9 +195,11 @@ class Payment(QDialog):
 
     def next(self):
         if self.ui.sum.text():
-            msg = SuccessfullTransaction()
-            msg.exec_()
-            self.accept()
+            if self._subwindow is None:
+                self._subwindow = SuccessfullTransaction()
+            self._subwindow.show()
+            self._subwindow.activateWindow()
+            self.close()
             self.ui.stackedWidget.setCurrentWidget(self.ui.payment)
 
 
@@ -195,4 +211,4 @@ class SuccessfullTransaction(QDialog):
         self.setWindowFlag(Qt.FramelessWindowHint)
 
     def ok(self):
-        self.accept()
+        self.close()
