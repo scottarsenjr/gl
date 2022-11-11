@@ -3,9 +3,7 @@ import sys
 
 from ui.rc.app_rc import *
 from ui.rc.logout_rc import *
-from ui.rc.wallet_rc import *
 from ui.rc.payment_rc import *
-from ui.rc.choose_amount_rc import *
 
 from functools import partial
 
@@ -19,29 +17,51 @@ class MainAppWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.ui = Ui_MainWindow()
+        self.payment = Payment()
         self.ui.setupUi(self)
         self.setWindowFlag(Qt.FramelessWindowHint)
         self.current_user = self
-        self.wallet = Wallet()
+        self.current_balance = 0
 
+        self.ui.stackedWidget.setCurrentWidget(self.ui.home_page)
         self.ui.pushButton.clicked.connect(lambda: self.slideLeftMenu())
         self.ui.pushButton_5.clicked.connect(self.logout)
-        self.ui.wallet.clicked.connect(self.wallet_redirect)
+        self.ui.wallet.clicked.connect(self.redirect)
 
-    def wallet_redirect(self):
-        self.hide()
-        self.show_wallet()
+    def redirect(self):
+        self.ui.stackedWidget.setCurrentWidget(self.ui.wallet_page)
 
-    def show_wallet(self):
-        if self.wallet.exec():
+        self.ui.home_2.clicked.connect(self.home_redirect)
+        self.ui.pushButton_2.clicked.connect(lambda: self.slideLeftMenu_2())
+        self.ui.pushButton_6.clicked.connect(self.logout_2)
+        self.ui.pushButton_3.clicked.connect(self.shipping_check)
+
+    def shipping_check(self):
+        if (self.ui.textEdit.toPlainText()) and not(self.ui.textEdit.toPlainText().isspace()):
+            self.top_up_balance()
+        else:
+            msg = FillUp()
+            msg.exec_()
+
+    def top_up_balance(self):
+        self.show_payment()
+
+    def show_payment(self):
+        if self.payment.exec():
             self.show()
 
+    def home_redirect(self):
+        self.ui.stackedWidget.setCurrentWidget(self.ui.home_page)
+
     def display_info(self):
-        self.wallet.acc_info = self.current_user
-        self.wallet.get_user()
+        self.ui.account.setText(f'Account: {self.current_user}')
         self.show()
 
     def logout(self):
+        dialog = LogoutDialog(self)
+        dialog.exec()
+
+    def logout_2(self):
         dialog = LogoutDialog(self)
         dialog.exec()
 
@@ -54,6 +74,21 @@ class MainAppWindow(QMainWindow):
             new_width = 0
 
         self.animation = QPropertyAnimation(self.ui.side_menu, b"minimumWidth")
+        self.animation.setDuration(250)
+        self.animation.setStartValue(width)
+        self.animation.setEndValue(new_width)
+        self.animation.setEasingCurve(QtCore.QEasingCurve.InOutQuart)
+        self.animation.start()
+
+    def slideLeftMenu_2(self):
+        width = self.ui.side_menu_2.width()
+
+        if width == 0:
+            new_width = 200
+        else:
+            new_width = 0
+
+        self.animation = QPropertyAnimation(self.ui.side_menu_2, b"minimumWidth")
         self.animation.setDuration(250)
         self.animation.setStartValue(width)
         self.animation.setEndValue(new_width)
@@ -80,69 +115,6 @@ class LogoutDialog(QDialog):
         self.close()
 
 
-class Wallet(QDialog):
-    def __init__(self):
-        super().__init__()
-        self.setWindowFlag(Qt.FramelessWindowHint)
-        self.ui = Ui_Wallet()
-        self.ui.setupUi(self)
-        self.acc_info = self
-        self.payment = Payment()
-        self.balance = 0
-
-        self.ui.home.clicked.connect(self.home_redirect)
-        self.ui.pushButton.clicked.connect(lambda: self.slideLeftMenu())
-        self.ui.pushButton_5.clicked.connect(self.logout)
-        self.ui.pushButton_2.clicked.connect(self.shipping_check)
-
-    def shipping_check(self):
-        if (self.ui.textEdit.toPlainText()) and not(self.ui.textEdit.toPlainText().isspace()):
-            self.top_up_balance()
-        else:
-            msg = FillUp()
-            msg.exec_()
-
-    def show_sub_window(self):
-        self.amount = Amount()
-        self.amount.submitClicked.connect(self.on_data_confirm)
-
-    def on_data_confirm(self, balance):
-        print(balance)
-
-    def home_redirect(self):
-        self.accept()
-
-    def get_user(self):
-        self.ui.account.setText(f'Account: {self.acc_info}')
-        self.ui.balance.setText(f'Balance: {self.balance} $')
-
-    def top_up_balance(self):
-        self.show_payment()
-
-    def show_payment(self):
-        if self.payment.exec():
-            self.show()
-
-    def logout(self):
-        dialog = LogoutDialog(self)
-        dialog.exec()
-
-    def slideLeftMenu(self):
-        width = self.ui.side_menu.width()
-
-        if width == 0:
-            new_width = 200
-        else:
-            new_width = 0
-
-        self.animation = QPropertyAnimation(self.ui.side_menu, b"minimumWidth")
-        self.animation.setDuration(250)
-        self.animation.setStartValue(width)
-        self.animation.setEndValue(new_width)
-        self.animation.setEasingCurve(QtCore.QEasingCurve.InOutQuart)
-        self.animation.start()
-
-
 class FillUp(QDialog):
     def __init__(self):
         super().__init__()
@@ -159,8 +131,9 @@ class Payment(QDialog):
         super().__init__()
         self.setWindowFlag(Qt.FramelessWindowHint)
         self.ui = Ui_Payment()
-        self.proceed_redirect = Amount()
         self.ui.setupUi(self)
+        self.ui.stackedWidget.setCurrentWidget(self.ui.payment)
+
         self.ui.cancel.clicked.connect(self.cancel)
         self.ui.proceed.clicked.connect(self.proceed)
 
@@ -183,49 +156,33 @@ class Payment(QDialog):
         self.ui.cardholder.setValidator(abc_validator)
 
     def cancel(self):
-        self.close()
+        self.accept()
 
     def proceed(self):
-        self.close()
-        self.show_amount()
+        self.ui.stackedWidget.setCurrentWidget(self.ui.amount)
 
-    def show_amount(self):
-        if self.proceed_redirect.exec():
-            self.show()
+        self.ui.hundred.clicked.connect(partial(self.redirect, '100'))
+        self.ui.two_hundred.clicked.connect(partial(self.redirect, '250'))
+        self.ui.half_thousand.clicked.connect(partial(self.redirect, '500'))
+        self.ui.thousand.clicked.connect(partial(self.redirect, '1000'))
+        self.ui.two_half_thousand.clicked.connect(partial(self.redirect, '2500'))
+        self.ui.five_thousand.clicked.connect(partial(self.redirect, '5000'))
 
+        self.ui.cancel_2.clicked.connect(self.back)
+        self.ui.proceed_2.clicked.connect(self.next)
 
-class Amount(QDialog):
-    submitClicked = QtCore.pyqtSignal(str)
+    def back(self):
+        self.ui.stackedWidget.setCurrentWidget(self.ui.payment)
 
-    def __init__(self):
-        super().__init__()
-        self.setWindowFlag(Qt.FramelessWindowHint)
-        self.ui = Ui_Amount()
-        self.ui.setupUi(self)
-        self.ui.cancel.clicked.connect(self.cancel)
-        self.ui.proceed.clicked.connect(self.next)
-
-        self.ui.hundred.clicked.connect(partial(self.proceed, '100'))
-        self.ui.two_hundred.clicked.connect(partial(self.proceed, '250'))
-        self.ui.half_thousand.clicked.connect(partial(self.proceed, '500'))
-        self.ui.thousand.clicked.connect(partial(self.proceed, '1000'))
-        self.ui.two_half_thousand.clicked.connect(partial(self.proceed, '2500'))
-        self.ui.five_thousand.clicked.connect(partial(self.proceed, '5000'))
-
-    def cancel(self):
-        self.close()
-
-    def proceed(self, value):
+    def redirect(self, value):
         self.ui.sum.setText(f'{value} $')
 
     def next(self):
         if self.ui.sum.text():
             msg = SuccessfullTransaction()
             msg.exec_()
-
-    def confirm(self):
-        self.submitClicked.emit(int(self.ui.sum.text()))
-        self.close()
+            self.accept()
+            self.ui.stackedWidget.setCurrentWidget(self.ui.payment)
 
 
 class SuccessfullTransaction(QDialog):
@@ -236,4 +193,4 @@ class SuccessfullTransaction(QDialog):
         self.setWindowFlag(Qt.FramelessWindowHint)
 
     def ok(self):
-        self.close()
+        self.accept()

@@ -70,7 +70,6 @@ class LoginWindow(QDialog):
         super(LoginWindow, self).__init__()
         self.auth = {}
         self.app_redirect = MainAppWindow()
-        self.wallet = Wallet()
         self.reg = RegisterWindow()
         self.setWindowFlag(Qt.FramelessWindowHint)
 

@@ -15,9 +15,19 @@ class Ui_Payment(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(791, 463)
-        self.verticalLayout = QtWidgets.QVBoxLayout(Dialog)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.frame = QtWidgets.QFrame(Dialog)
+        self.verticalLayout_5 = QtWidgets.QVBoxLayout(Dialog)
+        self.verticalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_5.setSpacing(0)
+        self.verticalLayout_5.setObjectName("verticalLayout_5")
+        self.stackedWidget = QtWidgets.QStackedWidget(Dialog)
+        self.stackedWidget.setObjectName("stackedWidget")
+        self.payment = QtWidgets.QWidget()
+        self.payment.setObjectName("payment")
+        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.payment)
+        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_3.setSpacing(0)
+        self.verticalLayout_3.setObjectName("verticalLayout_3")
+        self.frame = QtWidgets.QFrame(self.payment)
         self.frame.setStyleSheet("*{\n"
 "    border: none;\n"
 "    background-color: transparent;\n"
@@ -67,8 +77,6 @@ class Ui_Payment(object):
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.frame)
-        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.frame_2 = QtWidgets.QFrame(self.frame)
         self.frame_2.setStyleSheet("background-color: white;")
@@ -192,9 +200,307 @@ class Ui_Payment(object):
         self.horizontalLayout.addWidget(self.proceed, 0, QtCore.Qt.AlignRight)
         self.gridLayout.addWidget(self.frame_5, 2, 0, 1, 1)
         self.verticalLayout_2.addWidget(self.frame_2)
-        self.verticalLayout.addWidget(self.frame)
+        self.verticalLayout_3.addWidget(self.frame)
+        self.stackedWidget.addWidget(self.payment)
+        self.amount = QtWidgets.QWidget()
+        self.amount.setObjectName("amount")
+        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.amount)
+        self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_6.setSpacing(0)
+        self.verticalLayout_6.setObjectName("verticalLayout_6")
+        self.frame_6 = QtWidgets.QFrame(self.amount)
+        self.frame_6.setStyleSheet("*{\n"
+"    border: none;\n"
+"    background-color: transparent;\n"
+"    color: #fff;\n"
+"}\n"
+"#centralwiget{\n"
+"    background-color: rgb(255, 255, 255);\n"
+"}\n"
+"#side_menu{\n"
+"    background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:0, stop:0 rgba(9, 22, 41, 255), stop:1 rgba(9, 31, 63, 255));\n"
+"    border-radius: 20px;\n"
+"}\n"
+"#header{\n"
+"    background-color: rgb(5, 17, 34);\n"
+"}\n"
+"QPushButton{\n"
+"    padding: 10px;\n"
+"    background-color: rgb(5, 17, 34);\n"
+"    border-radius: 10px;\n"
+"    color: white;\n"
+"}\n"
+"QPushButton:hover{\n"
+"    background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0.130682, y2:0.165, stop:0 rgba(34, 120, 239, 255), stop:1 rgba(145, 185, 239, 255));\n"
+"}\n"
+"#main_body{\n"
+"    background-color: white;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"QScrollBar::handle:vertical\n"
+"{\n"
+"      background-color: rgb(232, 232, 232);\n"
+"      min-height: 5px;\n"
+"      border-radius: 6px;\n"
+"}\n"
+"QScrollBar::add-line:vertical \n"
+"{\n"
+"      border: none;\n"
+"      background: none;\n"
+"}\n"
+"\n"
+"QScrollBar::sub-line:vertical\n"
+"{\n"
+"      border: none;\n"
+"      background: none;\n"
+"}")
+        self.frame_6.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_6.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_6.setObjectName("frame_6")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.frame_6)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.frame_7 = QtWidgets.QFrame(self.frame_6)
+        self.frame_7.setStyleSheet("background-color: white;")
+        self.frame_7.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_7.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_7.setObjectName("frame_7")
+        self.gridLayout_2 = QtWidgets.QGridLayout(self.frame_7)
+        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.frame_8 = QtWidgets.QFrame(self.frame_7)
+        self.frame_8.setMinimumSize(QtCore.QSize(0, 50))
+        self.frame_8.setMaximumSize(QtCore.QSize(16777215, 50))
+        self.frame_8.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_8.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_8.setObjectName("frame_8")
+        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.frame_8)
+        self.horizontalLayout_3.setContentsMargins(-1, 0, 0, 0)
+        self.horizontalLayout_3.setSpacing(0)
+        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
+        self.cancel_2 = QtWidgets.QPushButton(self.frame_8)
+        self.cancel_2.setMinimumSize(QtCore.QSize(100, 0))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.cancel_2.setFont(font)
+        self.cancel_2.setStyleSheet("QPushButton{\n"
+"    background-color: rgba(255, 255, 255, 0);\n"
+"    color: black;\n"
+"    border: 2px solid rgb(232, 232, 232);\n"
+"}\n"
+"QPushButton:hover{\n"
+"    background-color: rgb(232, 232, 232);\n"
+"}")
+        self.cancel_2.setObjectName("cancel_2")
+        self.horizontalLayout_3.addWidget(self.cancel_2, 0, QtCore.Qt.AlignLeft)
+        self.proceed_2 = QtWidgets.QPushButton(self.frame_8)
+        self.proceed_2.setMinimumSize(QtCore.QSize(100, 0))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.proceed_2.setFont(font)
+        self.proceed_2.setStyleSheet("QPushButton{\n"
+"    background-color: rgba(255, 255, 255, 0);\n"
+"    color: black;\n"
+"    border: 2px solid rgb(232, 232, 232);\n"
+"}\n"
+"QPushButton:hover{\n"
+"    background-color: rgb(232, 232, 232);\n"
+"}")
+        self.proceed_2.setObjectName("proceed_2")
+        self.horizontalLayout_3.addWidget(self.proceed_2, 0, QtCore.Qt.AlignRight)
+        self.gridLayout_2.addWidget(self.frame_8, 2, 0, 1, 1)
+        self.frame_9 = QtWidgets.QFrame(self.frame_7)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frame_9.sizePolicy().hasHeightForWidth())
+        self.frame_9.setSizePolicy(sizePolicy)
+        self.frame_9.setMinimumSize(QtCore.QSize(0, 60))
+        self.frame_9.setMaximumSize(QtCore.QSize(16777215, 60))
+        self.frame_9.setStyleSheet("")
+        self.frame_9.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_9.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_9.setObjectName("frame_9")
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.frame_9)
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        self.label_3 = QtWidgets.QLabel(self.frame_9)
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.label_3.setFont(font)
+        self.label_3.setStyleSheet("color: black;")
+        self.label_3.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_3.setObjectName("label_3")
+        self.horizontalLayout_4.addWidget(self.label_3)
+        self.gridLayout_2.addWidget(self.frame_9, 0, 0, 1, 1)
+        self.frame_10 = QtWidgets.QFrame(self.frame_7)
+        self.frame_10.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_10.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_10.setObjectName("frame_10")
+        self.verticalLayout_4 = QtWidgets.QVBoxLayout(self.frame_10)
+        self.verticalLayout_4.setObjectName("verticalLayout_4")
+        self.frame_11 = QtWidgets.QFrame(self.frame_10)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frame_11.sizePolicy().hasHeightForWidth())
+        self.frame_11.setSizePolicy(sizePolicy)
+        self.frame_11.setMinimumSize(QtCore.QSize(0, 50))
+        self.frame_11.setMaximumSize(QtCore.QSize(16777215, 50))
+        self.frame_11.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_11.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_11.setObjectName("frame_11")
+        self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.frame_11)
+        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_5.setSpacing(0)
+        self.horizontalLayout_5.setObjectName("horizontalLayout_5")
+        self.label_4 = QtWidgets.QLabel(self.frame_11)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
+        self.label_4.setSizePolicy(sizePolicy)
+        self.label_4.setMinimumSize(QtCore.QSize(0, 50))
+        self.label_4.setMaximumSize(QtCore.QSize(300, 50))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.label_4.setFont(font)
+        self.label_4.setStyleSheet("color: black;")
+        self.label_4.setObjectName("label_4")
+        self.horizontalLayout_5.addWidget(self.label_4)
+        self.sum = QtWidgets.QLabel(self.frame_11)
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.sum.setFont(font)
+        self.sum.setStyleSheet("color: black;")
+        self.sum.setText("")
+        self.sum.setObjectName("sum")
+        self.horizontalLayout_5.addWidget(self.sum)
+        self.verticalLayout_4.addWidget(self.frame_11)
+        self.frame_12 = QtWidgets.QFrame(self.frame_10)
+        self.frame_12.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_12.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_12.setObjectName("frame_12")
+        self.gridLayout_3 = QtWidgets.QGridLayout(self.frame_12)
+        self.gridLayout_3.setObjectName("gridLayout_3")
+        self.two_hundred = QtWidgets.QPushButton(self.frame_12)
+        self.two_hundred.setMinimumSize(QtCore.QSize(200, 0))
+        self.two_hundred.setMaximumSize(QtCore.QSize(200, 16777215))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.two_hundred.setFont(font)
+        self.two_hundred.setStyleSheet("QPushButton{\n"
+"    background-color: rgba(255, 255, 255, 0);\n"
+"    color: black;\n"
+"    border: 2px solid rgb(232, 232, 232);\n"
+"}\n"
+"QPushButton:hover{\n"
+"    background-color: rgb(232, 232, 232);\n"
+"}")
+        self.two_hundred.setObjectName("two_hundred")
+        self.gridLayout_3.addWidget(self.two_hundred, 1, 0, 1, 1)
+        self.five_thousand = QtWidgets.QPushButton(self.frame_12)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.five_thousand.sizePolicy().hasHeightForWidth())
+        self.five_thousand.setSizePolicy(sizePolicy)
+        self.five_thousand.setMinimumSize(QtCore.QSize(200, 0))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.five_thousand.setFont(font)
+        self.five_thousand.setStyleSheet("QPushButton{\n"
+"    background-color: rgba(255, 255, 255, 0);\n"
+"    color: black;\n"
+"    border: 2px solid rgb(232, 232, 232);\n"
+"}\n"
+"QPushButton:hover{\n"
+"    background-color: rgb(232, 232, 232);\n"
+"}")
+        self.five_thousand.setObjectName("five_thousand")
+        self.gridLayout_3.addWidget(self.five_thousand, 1, 2, 1, 1)
+        self.two_half_thousand = QtWidgets.QPushButton(self.frame_12)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.two_half_thousand.sizePolicy().hasHeightForWidth())
+        self.two_half_thousand.setSizePolicy(sizePolicy)
+        self.two_half_thousand.setMinimumSize(QtCore.QSize(200, 0))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.two_half_thousand.setFont(font)
+        self.two_half_thousand.setStyleSheet("QPushButton{\n"
+"    background-color: rgba(255, 255, 255, 0);\n"
+"    color: black;\n"
+"    border: 2px solid rgb(232, 232, 232);\n"
+"}\n"
+"QPushButton:hover{\n"
+"    background-color: rgb(232, 232, 232);\n"
+"}")
+        self.two_half_thousand.setObjectName("two_half_thousand")
+        self.gridLayout_3.addWidget(self.two_half_thousand, 0, 2, 1, 1)
+        self.thousand = QtWidgets.QPushButton(self.frame_12)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.thousand.sizePolicy().hasHeightForWidth())
+        self.thousand.setSizePolicy(sizePolicy)
+        self.thousand.setMinimumSize(QtCore.QSize(200, 0))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.thousand.setFont(font)
+        self.thousand.setStyleSheet("QPushButton{\n"
+"    background-color: rgba(255, 255, 255, 0);\n"
+"    color: black;\n"
+"    border: 2px solid rgb(232, 232, 232);\n"
+"}\n"
+"QPushButton:hover{\n"
+"    background-color: rgb(232, 232, 232);\n"
+"}")
+        self.thousand.setObjectName("thousand")
+        self.gridLayout_3.addWidget(self.thousand, 1, 1, 1, 1, QtCore.Qt.AlignHCenter)
+        self.hundred = QtWidgets.QPushButton(self.frame_12)
+        self.hundred.setMinimumSize(QtCore.QSize(200, 0))
+        self.hundred.setMaximumSize(QtCore.QSize(200, 16777215))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.hundred.setFont(font)
+        self.hundred.setStyleSheet("QPushButton{\n"
+"    background-color: rgba(255, 255, 255, 0);\n"
+"    color: black;\n"
+"    border: 2px solid rgb(232, 232, 232);\n"
+"}\n"
+"QPushButton:hover{\n"
+"    background-color: rgb(232, 232, 232);\n"
+"}")
+        self.hundred.setObjectName("hundred")
+        self.gridLayout_3.addWidget(self.hundred, 0, 0, 1, 1)
+        self.half_thousand = QtWidgets.QPushButton(self.frame_12)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.half_thousand.sizePolicy().hasHeightForWidth())
+        self.half_thousand.setSizePolicy(sizePolicy)
+        self.half_thousand.setMinimumSize(QtCore.QSize(200, 0))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.half_thousand.setFont(font)
+        self.half_thousand.setStyleSheet("QPushButton{\n"
+"    background-color: rgba(255, 255, 255, 0);\n"
+"    color: black;\n"
+"    border: 2px solid rgb(232, 232, 232);\n"
+"}\n"
+"QPushButton:hover{\n"
+"    background-color: rgb(232, 232, 232);\n"
+"}")
+        self.half_thousand.setObjectName("half_thousand")
+        self.gridLayout_3.addWidget(self.half_thousand, 0, 1, 1, 1, QtCore.Qt.AlignHCenter)
+        self.verticalLayout_4.addWidget(self.frame_12)
+        self.gridLayout_2.addWidget(self.frame_10, 1, 0, 1, 1)
+        self.verticalLayout.addWidget(self.frame_7)
+        self.verticalLayout_6.addWidget(self.frame_6)
+        self.stackedWidget.addWidget(self.amount)
+        self.verticalLayout_5.addWidget(self.stackedWidget)
 
         self.retranslateUi(Dialog)
+        self.stackedWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
@@ -203,3 +509,13 @@ class Ui_Payment(object):
         self.label_2.setText(_translate("Dialog", "PAYMENT PAGE"))
         self.cancel.setText(_translate("Dialog", "BACK"))
         self.proceed.setText(_translate("Dialog", "OK"))
+        self.cancel_2.setText(_translate("Dialog", "BACK"))
+        self.proceed_2.setText(_translate("Dialog", "OK"))
+        self.label_3.setText(_translate("Dialog", "PAYMENT PAGE"))
+        self.label_4.setText(_translate("Dialog", "Choose the amount you want ($) :"))
+        self.two_hundred.setText(_translate("Dialog", "250"))
+        self.five_thousand.setText(_translate("Dialog", "5000"))
+        self.two_half_thousand.setText(_translate("Dialog", "2500"))
+        self.thousand.setText(_translate("Dialog", "1000"))
+        self.hundred.setText(_translate("Dialog", "100"))
+        self.half_thousand.setText(_translate("Dialog", "500"))
