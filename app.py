@@ -21,6 +21,7 @@ class MainAppWindow(QMainWindow):
         self.ui.setupUi(self)
         self.setWindowFlag(Qt.FramelessWindowHint)
         self.current_user = self
+        # Передать сюда в переменную значение value (в self.current_balance)
         self.current_balance = 0
 
         self.ui.stackedWidget.setCurrentWidget(self.ui.home_page)
@@ -176,6 +177,7 @@ class Payment(QDialog):
 
     def redirect(self, value):
         self.ui.sum.setText(f'{value} $')
+        # value передать в MainWindowApp класс
 
     def next(self):
         if self.ui.sum.text():
