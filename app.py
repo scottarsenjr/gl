@@ -1,15 +1,15 @@
 import sqlite3
 import sys
-import datetime
 
 from ui.rc.app_rc import *
 from ui.rc.logout_rc import *
 from ui.rc.payment_rc import *
+from ui.rc.buying_rc import *
 
 from functools import partial
 
 from auth import *
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QDialog
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QDialog, QButtonGroup
 from PyQt5.QtCore import Qt, QPropertyAnimation, QRegExp
 from PyQt5.QtGui import QRegExpValidator
 
@@ -48,7 +48,6 @@ class Payment(QDialog):
 
     def proceed(self):
         self.ui.error.setText('')
-        date = datetime.date.today()
         self.ui.stackedWidget.setCurrentWidget(self.ui.amount)
         self._subwindow = None
 
@@ -81,6 +80,8 @@ class Payment(QDialog):
 
 
 class MainAppWindow(QMainWindow):
+    productName = QtCore.pyqtSignal(str)
+
     def __init__(self):
         super().__init__()
         self.ui = Ui_MainWindow()
@@ -88,6 +89,7 @@ class MainAppWindow(QMainWindow):
         self.setWindowFlag(Qt.FramelessWindowHint)
         self.current_user = False
         self._logout = None
+        self._buying = None
 
         self.is_checked = self
 
@@ -95,6 +97,8 @@ class MainAppWindow(QMainWindow):
         self.ui.pushButton.clicked.connect(lambda: self.slideLeftMenu())
         self.ui.pushButton_5.clicked.connect(self.logout)
         self.ui.wallet.clicked.connect(self.redirect)
+
+        self.ui.buy1.clicked.connect(partial(self.cart, '1'))
 
     def set_balance(self):
         db = sqlite3.connect('database.db')
@@ -133,13 +137,11 @@ class MainAppWindow(QMainWindow):
         if self._payment is None:
             self._payment = Payment()
             self._payment.submitClicked.connect(self.update_balance)
-            print(self._payment.submitClicked)
         self._payment.show()
         self._payment.activateWindow()
 
     def update_balance(self, balance):
         self.current_balance += int(balance)
-        print(int(balance))
         self.ui.balance.setText(f'Balance: {self.current_balance} $')
         db = sqlite3.connect('database.db')
         cursor = db.cursor()
@@ -153,6 +155,13 @@ class MainAppWindow(QMainWindow):
     def display_info(self):
         self.ui.account.setText(f'Account: {self.current_user}')
         self.show()
+
+    def cart(self, value):
+        if self._buying is None:
+            self._buying = BuyingPage()
+            self.productName.emit(value)
+        self._buying.show()
+        self._buying.activateWindow()
 
     def logout(self):
         if self._logout is None:
@@ -195,6 +204,20 @@ class MainAppWindow(QMainWindow):
         self.animation.setEndValue(new_width)
         self.animation.setEasingCurve(QtCore.QEasingCurve.InOutQuart)
         self.animation.start()
+
+
+class BuyingPage(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.ui = Ui_Buying()
+        self.ui.setupUi(self)
+        self.app = MainAppWindow()
+        self.product = self
+        self.setWindowFlag(Qt.FramelessWindowHint)
+        self.app.productName.connect(self.update_name)
+
+    def update_name(self, product):
+        print(product)
 
 
 class LogoutDialog(QDialog):

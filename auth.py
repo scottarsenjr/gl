@@ -129,6 +129,7 @@ class RegisterWindow(QDialog):
     def register(self):
         user_login = self.ui.lineEdit.text()
         user_password = self.ui.lineEdit_2.text()
+        balance = 0
 
         if len(user_login) == 0:
             return
@@ -140,7 +141,7 @@ class RegisterWindow(QDialog):
         if cursor.fetchone() is None:
             if self.ui.lineEdit_2.text() == self.ui.lineEdit_3.text():
                 if self.ui.checkBox.isChecked():
-                    cursor.execute(f'INSERT INTO users VALUES ("{user_login}", "{user_password}")')
+                    cursor.execute(f'INSERT INTO users VALUES ("{user_login}", "{user_password}", {balance})')
                     self.close()
                     self.show_success_register()
                     self.login_redirect()
