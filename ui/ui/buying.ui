@@ -230,7 +230,7 @@ border: transparent;</string>
                     <rect>
                      <x>10</x>
                      <y>250</y>
-                     <width>151</width>
+                     <width>361</width>
                      <height>31</height>
                     </rect>
                    </property>
@@ -989,6 +989,48 @@ border: transparent;</string>
                 </property>
                 <property name="frameShadow">
                  <enum>QFrame::Raised</enum>
+                </property>
+               </widget>
+               <widget class="QLabel" name="not_enough">
+                <property name="geometry">
+                 <rect>
+                  <x>220</x>
+                  <y>190</y>
+                  <width>300</width>
+                  <height>50</height>
+                 </rect>
+                </property>
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>50</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>300</width>
+                  <height>50</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>14</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: red;</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
                 </property>
                </widget>
               </widget>

@@ -79,9 +79,56 @@ class Payment(QDialog):
             self.ui.stackedWidget.setCurrentWidget(self.ui.payment)
 
 
-class MainAppWindow(QMainWindow):
-    productName = QtCore.pyqtSignal(str)
+class BuyingPage(QDialog):
+    def __init__(self):
+        super().__init__()
+        self.ui = Ui_Buying()
+        self.ui.setupUi(self)
+        self.app = MainAppWindow()
+        self.product = 0
+        self.total = 0
+        self.balance = 0
+        self.remaining = 0
+        self.setWindowFlag(Qt.FramelessWindowHint)
 
+        self.ui.proceed.clicked.connect(self.confirmation)
+        self.ui.back.clicked.connect(self.back)
+
+    def display_info(self):
+        if self.product == 1:
+            self.ui.product_name.setText(self.app.ui.buy1text.text())
+            self.ui.product_amount.valueChanged.connect(self.update_total)
+        if self.product == 2:
+            self.ui.product_name.setText(self.app.ui.buy2text.text())
+            self.ui.product_amount.valueChanged.connect(self.update_total)
+
+    def update_total(self):
+        if self.product == 1:
+            self.total = int(self.app.ui.label.text()[:-1]) * int(self.ui.product_amount.text())
+            self.ui.total_sum.setText(f'TOTAL: {self.total} $')
+        if self.product == 2:
+            self.total = int(self.app.ui.label2.text()[:-1]) * int(self.ui.product_amount.text())
+            self.ui.total_sum.setText(f'TOTAL: {self.total} $')
+
+    def confirmation(self):
+        if self.total > 0:
+            self.ui.stackedWidget.setCurrentWidget(self.ui.confirmation_page)
+            self.ui.cancel_2.clicked.connect(self.back_2)
+            self.ui.balance.setText(f'{self.balance} $')
+            self.ui.cart.setText(f'{self.total} $')
+            self.remaining = self.balance - self.total
+            if self.remaining > 0:
+                self.ui.remain.setText(f'{self.remaining} $')
+
+    def back(self):
+        self.ui.product_amount.setValue(0)
+        self.close()
+
+    def back_2(self):
+        self.ui.stackedWidget.setCurrentWidget(self.ui.cart_page)
+
+
+class MainAppWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.ui = Ui_MainWindow()
@@ -98,7 +145,12 @@ class MainAppWindow(QMainWindow):
         self.ui.pushButton_5.clicked.connect(self.logout)
         self.ui.wallet.clicked.connect(self.redirect)
 
-        self.ui.buy1.clicked.connect(partial(self.cart, '1'))
+        self.ui.buy1.clicked.connect(partial(self.cart, 1))
+        self.ui.buy2.clicked.connect(partial(self.cart, 2))
+        self.ui.buy3.clicked.connect(partial(self.cart, 3))
+        self.ui.buy4.clicked.connect(partial(self.cart, 4))
+        self.ui.buy5.clicked.connect(partial(self.cart, 5))
+        self.ui.buy6.clicked.connect(partial(self.cart, 6))
 
     def set_balance(self):
         db = sqlite3.connect('database.db')
@@ -157,9 +209,12 @@ class MainAppWindow(QMainWindow):
         self.show()
 
     def cart(self, value):
+        self.set_balance()
         if self._buying is None:
             self._buying = BuyingPage()
-            self.productName.emit(value)
+        self._buying.product = value
+        self._buying.display_info()
+        self._buying.balance = self.current_balance
         self._buying.show()
         self._buying.activateWindow()
 
@@ -204,20 +259,6 @@ class MainAppWindow(QMainWindow):
         self.animation.setEndValue(new_width)
         self.animation.setEasingCurve(QtCore.QEasingCurve.InOutQuart)
         self.animation.start()
-
-
-class BuyingPage(QDialog):
-    def __init__(self):
-        super().__init__()
-        self.ui = Ui_Buying()
-        self.ui.setupUi(self)
-        self.app = MainAppWindow()
-        self.product = self
-        self.setWindowFlag(Qt.FramelessWindowHint)
-        self.app.productName.connect(self.update_name)
-
-    def update_name(self, product):
-        print(product)
 
 
 class LogoutDialog(QDialog):
