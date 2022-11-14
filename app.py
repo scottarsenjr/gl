@@ -10,7 +10,7 @@ from functools import partial
 
 from auth import *
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QDialog, QButtonGroup
-from PyQt5.QtCore import Qt, QPropertyAnimation, QRegExp
+from PyQt5.QtCore import Qt, QPropertyAnimation, QRegExp, QSortFilterProxyModel
 from PyQt5.QtGui import QRegExpValidator
 
 
@@ -150,7 +150,6 @@ class BuyingPage(QDialog):
             if self.remaining > 0:
                 self.ui.remain.setText(f'{self.remaining} $')
                 self.ui.proceed_2.clicked.connect(self.success)
-                print(self.user)
             else:
                 self.ui.not_enough.setText('NOT ENOUGH BALANCE')
 
@@ -161,7 +160,6 @@ class BuyingPage(QDialog):
         cursor.execute(f'UPDATE users SET balance={self.remaining} WHERE login="{self.user}"')
         db.commit()
         if self._subwindow is None:
-            self.submitClicked.emit(self.balance)
             self._subwindow = SuccessfullBuy()
         self._subwindow.show()
         self._subwindow.activateWindow()

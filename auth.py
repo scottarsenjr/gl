@@ -34,7 +34,7 @@ class ConnectWindow(QMainWindow):
 
         uic.loadUi('ui/ui/main.ui', self)
 
-        self.setWindowTitle('GL Launcher')
+        self.setWindowTitle('GLShop')
         self.setWindowFlag(Qt.FramelessWindowHint)
 
         self.handler = ProgressHandler()
@@ -73,6 +73,7 @@ class LoginWindow(QDialog):
         self.payment = BuyingPage()
         self.reg = RegisterWindow()
         self.setWindowFlag(Qt.FramelessWindowHint)
+        self.setWindowTitle('GLShop')
 
         self.ui = Ui_Login()
         self.ui.setupUi(self)
@@ -123,6 +124,7 @@ class RegisterWindow(QDialog):
         self.ui.setupUi(self)
 
         self.setWindowFlag(Qt.FramelessWindowHint)
+        self.setWindowTitle('GLShop')
 
         self.ui.reg_btn.clicked.connect(self.register)
         self.ui.back_btn.clicked.connect(self.login_redirect)
@@ -168,6 +170,7 @@ class SuccessWindow(QDialog):
         uic.loadUi('ui/ui/success_reg.ui', self)
         self.pushButton.clicked.connect(self.ok)
         self.setWindowFlag(Qt.FramelessWindowHint)
+        self.setWindowTitle('GLShop')
 
     def ok(self):
         self.close()
