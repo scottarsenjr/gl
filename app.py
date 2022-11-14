@@ -82,13 +82,19 @@ class Payment(QDialog):
 class BuyingPage(QDialog):
     def __init__(self):
         super().__init__()
+        self.app = MainAppWindow()
         self.ui = Ui_Buying()
         self.ui.setupUi(self)
-        self.app = MainAppWindow()
+
         self.product = 0
         self.total = 0
         self.balance = 0
         self.remaining = 0
+
+        self.user = self
+
+        self._subwindow = None
+
         self.setWindowFlag(Qt.FramelessWindowHint)
 
         self.ui.proceed.clicked.connect(self.confirmation)
@@ -101,6 +107,18 @@ class BuyingPage(QDialog):
         if self.product == 2:
             self.ui.product_name.setText(self.app.ui.buy2text.text())
             self.ui.product_amount.valueChanged.connect(self.update_total)
+        if self.product == 3:
+            self.ui.product_name.setText(self.app.ui.buy3text.text())
+            self.ui.product_amount.valueChanged.connect(self.update_total)
+        if self.product == 4:
+            self.ui.product_name.setText(self.app.ui.buy4text.text())
+            self.ui.product_amount.valueChanged.connect(self.update_total)
+        if self.product == 5:
+            self.ui.product_name.setText(self.app.ui.buy5text.text())
+            self.ui.product_amount.valueChanged.connect(self.update_total)
+        if self.product == 6:
+            self.ui.product_name.setText(self.app.ui.buy6text.text())
+            self.ui.product_amount.valueChanged.connect(self.update_total)
 
     def update_total(self):
         if self.product == 1:
@@ -108,6 +126,18 @@ class BuyingPage(QDialog):
             self.ui.total_sum.setText(f'TOTAL: {self.total} $')
         if self.product == 2:
             self.total = int(self.app.ui.label2.text()[:-1]) * int(self.ui.product_amount.text())
+            self.ui.total_sum.setText(f'TOTAL: {self.total} $')
+        if self.product == 3:
+            self.total = int(self.app.ui.label3.text()[:-1]) * int(self.ui.product_amount.text())
+            self.ui.total_sum.setText(f'TOTAL: {self.total} $')
+        if self.product == 4:
+            self.total = int(self.app.ui.label4.text()[:-1]) * int(self.ui.product_amount.text())
+            self.ui.total_sum.setText(f'TOTAL: {self.total} $')
+        if self.product == 5:
+            self.total = int(self.app.ui.label5.text()[:-1]) * int(self.ui.product_amount.text())
+            self.ui.total_sum.setText(f'TOTAL: {self.total} $')
+        if self.product == 6:
+            self.total = int(self.app.ui.label6.text()[:-1]) * int(self.ui.product_amount.text())
             self.ui.total_sum.setText(f'TOTAL: {self.total} $')
 
     def confirmation(self):
@@ -119,6 +149,24 @@ class BuyingPage(QDialog):
             self.remaining = self.balance - self.total
             if self.remaining > 0:
                 self.ui.remain.setText(f'{self.remaining} $')
+                self.ui.proceed_2.clicked.connect(self.success)
+                print(self.user)
+            else:
+                self.ui.not_enough.setText('NOT ENOUGH BALANCE')
+
+    def success(self):
+        db = sqlite3.connect('database.db')
+        cursor = db.cursor()
+
+        cursor.execute(f'UPDATE users SET balance={self.remaining} WHERE login="{self.user}"')
+        db.commit()
+        if self._subwindow is None:
+            self.submitClicked.emit(self.balance)
+            self._subwindow = SuccessfullBuy()
+        self._subwindow.show()
+        self._subwindow.activateWindow()
+        self.close()
+        self.ui.stackedWidget.setCurrentWidget(self.ui.cart_page)
 
     def back(self):
         self.ui.product_amount.setValue(0)
@@ -215,6 +263,7 @@ class MainAppWindow(QMainWindow):
         self._buying.product = value
         self._buying.display_info()
         self._buying.balance = self.current_balance
+        self._buying.user = self.current_user
         self._buying.show()
         self._buying.activateWindow()
 
@@ -284,6 +333,17 @@ class FillUp(QDialog):
     def __init__(self):
         super().__init__()
         uic.loadUi('ui/ui/fill_up_address.ui', self)
+        self.pushButton.clicked.connect(self.ok)
+        self.setWindowFlag(Qt.FramelessWindowHint)
+
+    def ok(self):
+        self.close()
+
+
+class SuccessfullBuy(QDialog):
+    def __init__(self):
+        super().__init__()
+        uic.loadUi('ui/ui/success_buy.ui', self)
         self.pushButton.clicked.connect(self.ok)
         self.setWindowFlag(Qt.FramelessWindowHint)
 
